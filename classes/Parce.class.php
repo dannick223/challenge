@@ -3,44 +3,49 @@
  *
 * How to parce html:
 * $master = new Template("template/master.tpl");
-* $master->set('test', 'Body of test');
+* $master->stage('test', 'Body of test');
 * echo $master->output();
-* NOTE: Now you can use {{test} on master.tpl and then the index.php would have the value echoed
+* Now you can use {{test} on master.tpl and then the index.php would have the value printed
 
 * How to include parced html from different template to master:
 * $master = new Template("template/master.tpl");
 * $simple = new Template("template/simp.tpl");
-* $simple->set('simplified', 'I am a simplified example');
-* $master->set('h1', $simple->output()); // notice the use of the $master
+* $simple->stage('simplified', 'I am a simplified example');
+* $master->stage('h1', $simple->output()); // notice the use of the $master
 * echo $master->output();
-* NOTE: Now you can use {{h1}} on master.tpl and get the value of {{simplified}} from simp.tpl
+* Now you can use {{h1}} on master.tpl and get the value of {{simplified}} from simp.tpl
+* The reason for having the html template in a seperate file is because the php file_get_contents
+* also graps the php which is clearly unwanted and not safe. so a pure html file is the safest route.
+*  * @author     Daniel Sørensen - <d_soerensen@icloud.com>
+*/
+/**
+ * [Class used to parce html]
  */
-
-//NOTE: The reason for having the html template in a seperate file is because the php file_get_contents
-//  also graps the php which is clearly unwanted and not safe. so a pure html file is the safest route.
-
-
     class Parce
     {
-        protected $_file; // template html filename.
-        protected $_openTag = "{{"; // change the delimiter to whatever.
+        protected $_file;           // html template filename.
+        protected $_openTag = "{{"; // chosen the delimiter feel free to edit
         protected $_closeTag = "}}";
-        protected $_values = []; // contains all the keys and values.
+        protected $_values = [];    // contains all the keys and values.
         public function __construct($file)
         {
             $this->_file = $file;
         }
 
-        // Method used to set the $key and value in the protected $values array
-        public function set($key, $value)
+        /**
+         * Method used to fill the protected $values with $key and value
+         * @param [string] $key
+         * @param [string] $value
+         */
+        public function stage($key, $value)
         {
             $this->_values[$key] = $value;
         }
 
-        // Check if the Template file exists
-        // Read contents of $this->file (the html template)
-        // make a loop replacing everything with {{ }} around it with the matched value.
-        // returns the replaced html.
+        /**
+         * [Reads html template file and loops through the array to replace the $key with the arrays value.]
+         * @return [string] [returns the value of the array with matching $key]
+         */
         public function output()
         {
             if (!file_exists($this->_file)) {
@@ -54,19 +59,18 @@
             return $output;
         }
 
-        // Loops through each Template object, chains them together and puts a seperator between them.
-        // It expects an array of Template objects if anything else is given it returns an error.
-        // returns an output of the merged arrays with  seperator.
-        // shorthand if else to store data in a variable.
-        public static function merge($templates)
+        /**
+         * Loops through each supplied array of objects and chains them together
+         * places the data from the array into a string and then it is returned.
+         * @param  [array] $objects
+         * @return [string] [Returns the data from the supplied array of objects as string]
+         */
+        public static function chain($objects)
         {
             $output = "";
-            foreach ($templates as $template) {
-                $cont = (get_class($template) !== "Parce")
-                  ? "Error, expected Template. <br>"
-                  : $template->output();
-                $output .= $cont;
+            foreach ($objects as $object) {   // Loop through array of objects
+                $output .= $object->output(); // add data to string
             }
-            return $output;
+            return $output;                   // returns the string
         }
     }

@@ -10,26 +10,18 @@
 
 <body>
 
-<div class="container-fluid">
-{{h1}}
-<ul class="list-group">
-  <li class="list-group-item">{{file}}</li>
-  <li class="list-group-item">{{url}}</li>
-  <li class="list-group-item">{{date}}</li>
-</ul>
-<div class="user-card-cont">
-{{content}}
-</div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
-<script type="text/javascript">
-var app = new Vue({
-  el: '#app',
-  data: {
-    text: ''
-  }
-})
-</script>
+  <div class="container-fluid">
+    {{h1}}
+    <ul class="list-group">
+      <li class="list-group-item">{{file}}</li>
+      <li class="list-group-item">{{url}}</li>
+      <li class="list-group-item">{{date}}</li>
+    </ul>
+    <div class="user-card-cont">
+      {{content}}
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
 </body>
 
 </html>
