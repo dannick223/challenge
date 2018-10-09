@@ -1,6 +1,5 @@
 <?php
 /**
- *
 * How to parce html:
 * $master = new Template("template/master.tpl");
 * $master->stage('test', 'Body of test');
