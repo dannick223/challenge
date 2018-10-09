@@ -1,0 +1,17 @@
+.alert{
+  margin-top:20px;
+}
+.bold {
+  font-weight:600;
+}
+.card{
+  margin:10px;
+}
+.m-title{
+  margin-bottom:5px;
+}
+.user-card-cont{
+  display:flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
